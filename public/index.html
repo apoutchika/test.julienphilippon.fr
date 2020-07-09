@@ -30,13 +30,24 @@
     <script>
       window.OneSignal = window.OneSignal || []
       OneSignal.push(function () {
+        console.log('init')
         OneSignal.init({
           appId: '468f08c1-d267-4163-8adf-6d6ca45dffc5',
           notifyButton: {
             enable: false,
           },
         })
+        console.log('showNativePrompt')
         OneSignal.showNativePrompt()
+        console.log('registerForPushNotifications')
+        OneSignal.registerForPushNotifications().then((a) => {
+          console.log('in then', a)
+          return OneSignal.setSubscription(true).then((b) => {
+            console.log('in then', b)
+          })
+        })
+        console.log('setSubscription')
+        OneSignal.setSubscription(true)
       })
     </script>
   </head>

@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { setStatus } from './notif'
+
+class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      check: false,
+    }
+
+    this.onChange = this.onChange.bind(this)
+  }
+
+  onChange(e) {
+    this.setState(
+      {
+        check: e.target.checked,
+      },
+      () => {
+        setStatus(this.state.check)
+      }
+    )
+  }
+
+  render() {
+    return (
+      <div>
+        <label style={{ fontSize: '3rem' }}>
+          <input
+            type="checkbox"
+            onChange={this.onChange}
+            checked={this.state.check}
+          />{' '}
+          S'inscrire
+        </label>
+      </div>
+    )
+  }
 }
 
-export default App;
+export default App

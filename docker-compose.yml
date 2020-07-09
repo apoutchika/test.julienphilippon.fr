@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  www:
+    tty: true
+    image: node:latest
+    command: sh -c "cd /app && npm run start"
+    working_dir: /app
+    user: ${USER_ID}:${GROUP_ID}
+    volumes:
+      - '.:/app'
+    environment:
+      HOST: 0.0.0.0
+      PORT: 3000
+    networks:
+      - girouette
+    labels:
+      girouette.domains: test.julienphilippon.devel:3000
+      girouette.group: Test
+
+networks:
+  girouette:
+    external:
+      name: girouette

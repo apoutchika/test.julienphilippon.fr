@@ -29,6 +29,15 @@
     <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
     <script>
       window.OneSignal = window.OneSignal || []
+      if (OneSignal.installServiceWorker) {
+        OneSignal.installServiceWorker()
+      } else {
+        if (navigator.serviceWorker) {
+          navigator.serviceWorker.register(
+            '/OneSignalSDKWorker.js?appId=c931b2bb-1f1f-4ab1-98aa-2f6871cc6bbb'
+          )
+        }
+      }
       OneSignal.push(function () {
         console.log('init')
         OneSignal.init({

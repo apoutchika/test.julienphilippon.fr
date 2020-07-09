@@ -2,38 +2,59 @@ const Promise = require('bluebird')
 
 window.OneSignal = window.OneSignal || []
 
-export const setStatus = function (status) {
-  console.log('coucou')
-  window.OneSignal.push(function () {
-    console.log('1')
-    if (!window.OneSignal.isPushNotificationsSupported()) {
-      console.log('push not supported')
-      return false
-    }
+export const getStatus = () => {
+  return new Promise((resolve, reject) => {
+    window.OneSignal.push(async function () {
+      const { isPushEnabled, isOptedOut } = await Promise.props({
+        isPushEnabled: window.OneSignal.isPushNotificationsEnabled(),
+        isOptedOut: window.OneSignal.isOptedOut(),
+      })
 
-    console.log('Before promise')
-    Promise.all([
-      window.OneSignal.isPushNotificationsEnabled(),
-      window.OneSignal.isOptedOut(),
-    ]).then(function ([isPushEnabled, isOptedOut]) {
-      console.log([isPushEnabled, isOptedOut])
-      if (isPushEnabled) {
-        console.log('Subscribed, opt them out')
-        return window.OneSignal.setSubscription(false)
-      } else {
-        if (isOptedOut) {
-          console.log('Opted out, opt them back in')
-          return window.OneSignal.setSubscription(true)
-        } else {
-          console.log('Unsubscribed, subscribe them')
-          return window.OneSignal.registerForPushNotifications().then((a) => {
-            console.log('in then', a)
-            return window.OneSignal.setSubscription(true).then((b) => {
-              console.log('in then', b)
-            })
-          })
-        }
-      }
+      return resolve(isPushEnabled && !isOptedOut)
     })
+  })
+}
+
+export const setStatus = (status) => {
+  return new Promise((resolve, reject) => {
+    window.OneSignal.push(async function () {
+      if (!window.OneSignal.isPushNotificationsSupported()) {
+        return resolve(false)
+      }
+
+      const { isPushEnabled, isOptedOut } = await Promise.props({
+        isPushEnabled: window.OneSignal.isPushNotificationsEnabled(),
+        isOptedOut: window.OneSignal.isOptedOut(),
+      })
+
+      if ((isOptedOut || isOptedOut) && status) {
+        window.OneSignal.setSubscription(status)
+        return resolve(status)
+      }
+
+      if (isPushEnabled) {
+        window.OneSignal.setSubscription(false)
+        return resolve(false)
+      }
+
+      if (isOptedOut) {
+        window.OneSignal.setSubscription(true)
+        return resolve(true)
+      }
+
+      window.OneSignal.registerForPushNotifications()
+      return resolve(true)
+    })
+  })
+}
+
+export const switchStatus = () => setStatus()
+
+export const onChange = (cb) => {
+  window.OneSignal.push(async function () {
+    if (!window.OneSignal.isPushNotificationsSupported()) {
+      return
+    }
+    window.OneSignal.on('subscriptionChange', cb)
   })
 }

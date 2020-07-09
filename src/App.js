@@ -1,26 +1,30 @@
 import React from 'react'
 
-import { setStatus } from './notif'
+import { setStatus, getStatus, onChange } from './notif'
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      check: false,
+      status: false,
     }
 
     this.onChange = this.onChange.bind(this)
   }
 
+  async componentDidMount() {
+    const status = await getStatus()
+    this.setState({ status })
+
+    onChange((status) => {
+      console.log('onChange', status)
+    })
+  }
+
   onChange(e) {
-    this.setState(
-      {
-        check: e.target.checked,
-      },
-      () => {
-        setStatus(this.state.check)
-      }
-    )
+    setStatus(this.state.status).then((status) => {
+      this.setState({ status })
+    })
   }
 
   render() {
@@ -30,7 +34,7 @@ class App extends React.Component {
           <input
             type="checkbox"
             onChange={this.onChange}
-            checked={this.state.check}
+            checked={this.state.status}
           />{' '}
           S'inscrire
         </label>

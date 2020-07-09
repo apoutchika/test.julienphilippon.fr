@@ -32,22 +32,11 @@
       OneSignal.push(function () {
         console.log('init')
         OneSignal.init({
-          appId: "c931b2bb-1f1f-4ab1-98aa-2f6871cc6bbb",
+          appId: 'c931b2bb-1f1f-4ab1-98aa-2f6871cc6bbb',
           notifyButton: {
             enable: false,
           },
         })
-        console.log('showNativePrompt')
-        OneSignal.showNativePrompt()
-        console.log('registerForPushNotifications')
-        OneSignal.registerForPushNotifications().then((a) => {
-          console.log('in then', a)
-          return OneSignal.setSubscription(true).then((b) => {
-            console.log('in then', b)
-          })
-        })
-        console.log('setSubscription')
-        OneSignal.setSubscription(true)
       })
     </script>
   </head>

@@ -11,7 +11,7 @@ export const setStatus = function (status) {
       return false
     }
 
-    console.log('2')
+    console.log('Before promise')
     Promise.all([
       OneSignal.isPushNotificationsEnabled(),
       OneSignal.isOptedOut(),

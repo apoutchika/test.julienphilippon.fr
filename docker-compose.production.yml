@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  www:
+    command: sh -c "cd /app && npm run start"
+    image: node:latest
+    networks:
+      - traefik
+    working_dir: /app
+    volumes:
+      - '.:/app'
+    environment:
+      HOST: 0.0.0.0
+      PORT: 3000
+    labels:
+      traefik.frontend.rule: 'Host:test.julienphilippon.fr'
+      traefik.port: 3000
+
+networks:
+  back:
+  traefik:
+    driver: overlay
+    external: true

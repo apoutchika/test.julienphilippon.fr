@@ -11,13 +11,6 @@ services:
     environment:
       HOST: 0.0.0.0
       PORT: 3000
-    networks:
-      - girouette
     labels:
       girouette.domains: test.julienphilippon.devel:3000
       girouette.group: Test
-
-networks:
-  girouette:
-    external:
-      name: girouette

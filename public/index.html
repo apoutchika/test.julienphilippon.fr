@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="jr">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -25,28 +25,7 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
-
     <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
-    <script>
-      window.OneSignal = window.OneSignal || []
-      if (OneSignal.installServiceWorker) {
-        OneSignal.installServiceWorker()
-      } else {
-        if (navigator.serviceWorker) {
-          navigator.serviceWorker.register(
-            '/OneSignalSDKWorker.js?appId=c931b2bb-1f1f-4ab1-98aa-2f6871cc6bbb'
-          )
-        }
-      }
-      OneSignal.push(function () {
-        OneSignal.init({
-          appId: 'c931b2bb-1f1f-4ab1-98aa-2f6871cc6bbb',
-          notifyButton: {
-            enable: false,
-          },
-        })
-      })
-    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

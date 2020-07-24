@@ -1,6 +1,14 @@
 const Promise = require('bluebird')
 
 window.OneSignal = window.OneSignal || []
+window.OneSignal.push(function () {
+  window.OneSignal.init({
+    appId: '4e895f92-caef-477a-bc64-429d7e34acc5',
+    notifyButton: {
+      enable: false,
+    },
+  })
+})
 
 export const getStatus = () => {
   return new Promise((resolve, reject) => {
@@ -27,6 +35,8 @@ export const setStatus = (status) => {
         isOptedOut: window.OneSignal.isOptedOut(),
       })
 
+      console.log({ isPushEnabled, isOptedOut })
+
       if ((isOptedOut || isOptedOut) && status) {
         window.OneSignal.setSubscription(status)
         return resolve(status)
@@ -51,7 +61,7 @@ export const setStatus = (status) => {
 export const switchStatus = () => setStatus()
 
 export const onChange = (cb) => {
-  window.OneSignal.push(async function () {
+  window.OneSignal.push(function () {
     if (!window.OneSignal.isPushNotificationsSupported()) {
       return
     }
